@@ -8,6 +8,23 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name = "inventory_item")  // Stelle sicher, dass der Tabellenname hier steht!
 public class InventoryItem {
+
+
+    @Id
+    @GeneratedValue
+    private Long id;
+    private String barcode;
+    private String name;
+    private int quantity;
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
+
     public Long getId() {
         return id;
     }
@@ -30,21 +47,6 @@ public class InventoryItem {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    @Id
-    @GeneratedValue
-    private Long id;
-    private String barcode;
-    private String name;
-    private int quantity;
-
-    public int getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
     }
     // Getter & Setter
 }
