@@ -17,6 +17,18 @@ public class InventoryItem {
     private String name;
     private int quantity;
 
+
+
+    public InventoryItem() {
+
+    }
+
+    public InventoryItem(String barcode, String name, int quantity) {
+        this.barcode = barcode;
+        this.name = name;
+        this.quantity = quantity;
+    }
+
     public int getQuantity() {
         return quantity;
     }
