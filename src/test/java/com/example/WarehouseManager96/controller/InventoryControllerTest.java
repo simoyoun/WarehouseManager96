@@ -65,16 +65,16 @@ public class InventoryControllerTest {
                 .andExpect(jsonPath("$.name").value("Laptop4"));
     }
 
-//    @Test
-//    public void deleteItem_ShouldReturnNoContent() throws Exception {
-//        Long itemId = 1L;
-//
-//        // Perform DELETE request
-//        mockMvc.perform(delete("/items/{id}", itemId))
-//                .andExpect(status().isNoContent());
-//
-//        // Verify repository.deleteById was called with the correct ID
-//        verify(repository,times(1)).deleteById(itemId);
-//    }
+    @Test
+    public void testDeleteItem_returnsNoContent() throws Exception {
+        Long itemId = 1L;
+
+        mockMvc.perform(delete("/api/inventory/{id}", itemId))
+                .andExpect(status().isNoContent());
+
+        verify(repository, times(1)).deleteById(itemId);
+    }
+
+
 
 }
