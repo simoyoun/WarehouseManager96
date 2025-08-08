@@ -29,6 +29,31 @@ public class InventoryController {
         return ResponseEntity.ok(item);
     }
 
+    @PutMapping("/updateQuantity")
+    public ResponseEntity<InventoryItem> updateQuantity(@RequestBody InventoryItem item) {
+        InventoryItem item1 = repository.findByBarcode(item.getBarcode());
+        if (item1 == null) {
+            return ResponseEntity.notFound().build();
+        }
+        item1.setQuantity(item.getQuantity());
+        repository.save(item1);
+        return ResponseEntity.ok(item1);
+    }
+
+    @PutMapping("/quantity/{id}")
+    public ResponseEntity<InventoryItem> updateQuantity(@PathVariable Long id, @RequestBody UpdateQuantityRequest request) {
+        InventoryItem item1 = repository.findById(id).orElse(null);
+        if (item1 == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        item1.setQuantity(item1.getQuantity() + request.quantity());
+        repository.save(item1);
+
+        return ResponseEntity.ok(item1);
+    }
+
+
     @GetMapping("/all")
     public List<InventoryItem> getAllItems() {
         return repository.findAll();
@@ -52,4 +77,6 @@ public class InventoryController {
 
     // Request-Body-Klasse (innerhalb des Controllers oder separat)
     public record ScanRequest(String barcode) {}
+
+    public record UpdateQuantityRequest(int quantity) {}
 }
