@@ -53,7 +53,7 @@ public class InventoryControllerTest {
     @Test
     void addItem_shouldReturn200_whenValidRequest() throws Exception {
         // Arrange
-        InventoryItem mockItem = new InventoryItem("19344", "Laptop4", 10);
+        InventoryItem mockItem = new InventoryItem("19343", "Laptop4", 10);
         when(repository.save(any(InventoryItem.class))).thenReturn(mockItem);
 
         // Act & Assert
@@ -61,7 +61,7 @@ public class InventoryControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(mockItem)))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.barcode").value("19344"))
+                .andExpect(jsonPath("$.barcode").value("19343"))
                 .andExpect(jsonPath("$.name").value("Laptop4"));
     }
 
