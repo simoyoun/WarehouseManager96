@@ -29,6 +29,17 @@ public class InventoryController {
         return ResponseEntity.ok(item);
     }
 
+    @GetMapping("/search")
+    public ResponseEntity<List<InventoryItem>> searchItems(@RequestParam String query) {
+        List<InventoryItem> results = repository.findByNameContainingIgnoreCaseOrBarcode(query, query);
+
+        if (results.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(results);
+    }
+
+
     @PutMapping("/updateQuantity")
     public ResponseEntity<InventoryItem> updateQuantity(@RequestBody InventoryItem item) {
         InventoryItem item1 = repository.findByBarcode(item.getBarcode());

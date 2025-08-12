@@ -10,6 +10,10 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
@@ -73,6 +77,31 @@ public class InventoryControllerTest {
                 .andExpect(status().isNoContent());
 
         verify(repository, times(1)).deleteById(itemId);
+    }
+
+    @Test
+    void searchItems_shouldReturnMatchingResults() throws Exception {
+        // Arrange: create sample data
+        InventoryItem item1 = new InventoryItem("12345", "Laptop", 10);
+        InventoryItem item2 = new InventoryItem("67890", "Laptop Pro", 5);
+
+        // Mock repository to return our sample list
+        when(repository.findByNameContainingIgnoreCaseOrBarcode("laptop", "laptop"))
+                .thenReturn(List.of(item1, item2));
+
+        // Act & Assert
+        mockMvc.perform(get("/api/inventory/search")
+                        .param("query", "laptop")
+                        .contentType(MediaType.APPLICATION_JSON))
+                        .andExpect(status().isOk())
+                        .andExpect(jsonPath("$[0].barcode").value("12345"))
+                        .andExpect(jsonPath("$[0].name").value("Laptop"))
+                        .andExpect(jsonPath("$[1].barcode").value("67890"))
+                        .andExpect(jsonPath("$[1].name").value("Laptop Pro"));
+
+        // Verify repository was called correctly
+        verify(repository, times(1))
+                .findByNameContainingIgnoreCaseOrBarcode("laptop", "laptop");
     }
 
 
