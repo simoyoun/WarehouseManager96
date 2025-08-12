@@ -80,6 +80,17 @@ public class InventoryControllerTest {
     }
 
     @Test
+    public void deleteItemByBarcode_shouldReturnNoContent_whenItemExists() throws Exception {
+
+        InventoryItem mockItem = new InventoryItem("19369", "Laptop4", 10);
+        when(repository.findByBarcode("19369")).thenReturn(mockItem);
+        mockMvc.perform(delete("/api/inventory/barcode/{barcode}", "19369"))
+                .andExpect(status().isNoContent());
+        verify(repository, times(1)).findByBarcode("19369");
+        verify(repository, times(1)).delete(mockItem);
+    }
+
+    @Test
     void searchItems_shouldReturnMatchingResults() throws Exception {
         // Arrange: create sample data
         InventoryItem item1 = new InventoryItem("12345", "Laptop", 10);

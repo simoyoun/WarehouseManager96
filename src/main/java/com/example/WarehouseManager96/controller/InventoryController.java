@@ -86,6 +86,16 @@ public class InventoryController {
         return ResponseEntity.noContent().build();
     }
 
+    @DeleteMapping("/barcode/{barcode}")
+    public ResponseEntity<Void> deleteItemByBarcode(@PathVariable String barcode) {
+        InventoryItem item = repository.findByBarcode(barcode);
+        if (item == null) {
+            return ResponseEntity.notFound().build();
+        }
+        repository.delete(item);
+        return ResponseEntity.noContent().build();
+    }
+
     // Request-Body-Klasse (innerhalb des Controllers oder separat)
     public record ScanRequest(String barcode) {}
 
