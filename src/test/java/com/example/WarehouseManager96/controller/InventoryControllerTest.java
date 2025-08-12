@@ -104,6 +104,21 @@ public class InventoryControllerTest {
                 .findByNameContainingIgnoreCaseOrBarcode("laptop", "laptop");
     }
 
+    @Test
+    void searchItems_shouldReturnEmptyList() throws Exception {
+
+        when(repository.findByNameContainingIgnoreCaseOrBarcode("unknown", "unknown"))
+                .thenReturn(List.of());
+
+        mockMvc.perform(get("/api/inventory/search")
+                .param("query", "unknown")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNoContent());
+
+        verify(repository, times(1))
+                .findByNameContainingIgnoreCaseOrBarcode("unknown", "unknown");
+    }
+
 
 
 }
